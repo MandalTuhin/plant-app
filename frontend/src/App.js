@@ -4,7 +4,7 @@ import './App.css';
 function Section({ name, img, description }) {
   return (
     <div className="sections">
-      <img src={process.env.PUBLIC_URL + img} alt={name} />
+      <img src={`http://localhost:4000${img}`} alt={name} />
       <h2>{name}</h2>
       <div className="text">{description}</div>
     </div>
@@ -32,11 +32,11 @@ function App() {
 
   return (
     <div className="container">
-      <div className="title">Information!</div>
+      <div className="title">Your Favorite Plants!!!</div>
       <div className="section-wrapper">
         {plants.map(p => (
           <Section
-            key={p.id}
+            key={p._id}
             name={p.name}
             img={p.img}
             description={p.description}
