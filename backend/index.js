@@ -1,41 +1,43 @@
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose');
+
+
+const Plant = require('./model');
+
 const app = express();
 const port = 4000;
 
-app.use(cors());
 
+
+mongoose.connect('mongodb://localhost:27017/plantracker', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('MongoDB connected'))
+.catch(err => console.error('Mongo connection error :', err));
+
+app.use(cors());
 app.use(express.json());
 
-//dummy database, array of objects;
-
-let plants = [
-    {id:1, name:'Neem', description: 'Good medicinal tree', img: 'neem.png'},
-    {id:2, name: 'Tulsi', description: 'Sacred and healing', img: 'tulsi.png'},
-    {id:3, name: 'Elephant Ears', description: 'Water-hating plant', img: 'elephantEars.png'},
-    {id:4, name: 'Bougainvilia', description: 'PaperFlower Plant', img: 'Bougainvillia.png'},
-  ]
-
 // Dummy Data endpoint.
-app.get('/api/plants', (req, res) =>{
-  res.json(plants);
+app.get('/api/plants', async(req, res) =>{
+  try{
+    const plants  = await Plant.find();
+    res.json(plants);
+  } catch(err){
+    res.status(500).json({ error: err.message });
+  }
 });
 
-app.post('/api/plants', (req, res) =>{
-  const { name, description, img } = req.body;
-  
-  if(!name || !description || !img){
-    return res.status(400).json({error: 'name, description & img are required'});
+app.post('/api/plants', async(req, res) =>{
+  try{
+    const { name, description, img } = req.body;
+    const newPlant = await Plant.create({ name, description, img });
+    res.status(201).json(newPlant);
+  } catch(err){
+    res.status(400).json({error: err.message});
   }
-
-  // for generating a new ID.
-  const nextId = plants.reduce((max, p) => Math.max(max, p.id), 0) + 1;
-  
-  const newPlant = { id:nextId, name, description, img };
-  plants.push(newPlant);
-
-  //201 means created.
-  res.status(201).json(newPlant);
 });
 
 app.listen(port, ()=>{
