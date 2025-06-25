@@ -1,18 +1,14 @@
-# Ignore node modules
-**/node_modules/
+# ─── Backend ────────────────────────────────────────────
+backend/node_modules/
+backend/uploads/
+backend/.env
 
-# Ignore logs
-*.log
-npm-debug.log*
-
-# Ignore environment variables
-**/.env
-
-# React build
+# ─── Frontend (CRA) ─────────────────────────────────────
+frontend/node_modules/
 frontend/build/
+frontend/.env
 
-# macOS system files
+# ─── System / Editor ────────────────────────────────────
 .DS_Store
-
-# VS Code settings (optional)
 .vscode/
+.idea/
