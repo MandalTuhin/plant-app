@@ -15,6 +15,15 @@ A simple full-stack plant tracking app built with:
    ```bash
    sudo docker start plant-mongo
    ```
+   If the container doesn’t exist yet, run this instead:
+
+   ```bash
+   sudo docker run -d \
+   --name plant-mongo \
+   -p 27017:27017 \
+   -v plantdata:/data/db \
+   mongo:latest
+   ```
 
 2. Start backend
 
@@ -30,8 +39,10 @@ A simple full-stack plant tracking app built with:
    npm start
    ```
 
-## Roadmap
+##  Roadmap
 
 See ROADMAP.md for planned features and progress.
+
+## Purpose
 
 Created for learning, growth, and healing. 🌿
